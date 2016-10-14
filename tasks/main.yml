@@ -1,0 +1,7 @@
+---
+- name: Install OCS inventory agent
+  yum: name=ocsinventory-agent state=present enablerepo=remi
+  notify: Launch ocs inventory
+- name: Configure CRON report
+  cron: name="OCS inventory" minute="0" hour="7" job="{{ocsinventory_launcher}}"
+

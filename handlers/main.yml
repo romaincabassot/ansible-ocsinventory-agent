@@ -1,0 +1,3 @@
+---
+- name: Launch ocs inventory
+  shell: "{{ocsinventory_launcher}}"
