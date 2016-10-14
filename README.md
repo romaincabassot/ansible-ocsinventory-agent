@@ -1,4 +1,4 @@
-Role Name
+ocsinventory-agent
 =========
 
 Installs OCS inventory agent from [Remi repository](http://rpms.famillecollet.com/).
