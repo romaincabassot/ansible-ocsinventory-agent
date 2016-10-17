@@ -1,7 +1,25 @@
 ---
+- name: selinux support under EL 6
+  yum: name=libselinux-python state=present
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+
 - name: Install OCS inventory agent
   yum: name=ocsinventory-agent state=present enablerepo=remi
   notify: Launch ocs inventory
-- name: Configure CRON report
-  cron: name="OCS inventory" minute="0" hour="7" job="{{ocsinventory_launcher}}"
+
+- name: Remove default local option from ocsinventory-agent.cfg
+  lineinfile: dest=/etc/ocsinventory/ocsinventory-agent.cfg
+              regexp="^local = "
+              state=absent
+
+- name: Configure CRON job
+  cron: name="{{ ocsinventory_cronjob_name }}"
+        user="{{ ocsinventory_cronjob_user }}"
+        month="{{ ocsinventory_cronjob_month }}"
+        weekday="{{ ocsinventory_cronjob_weekday }}"
+        day="{{ ocsinventory_cronjob_day }}"
+        hour="{{ ocsinventory_cronjob_hour }}"
+        minute="{{ ocsinventory_cronjob_minute }}"
+        job="{{ocsinventory_launcher}}"
+  when: ocsinventory_setup_cronjob
 

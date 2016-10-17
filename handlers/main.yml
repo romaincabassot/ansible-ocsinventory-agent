@@ -1,3 +1,4 @@
 ---
 - name: Launch ocs inventory
   shell: "{{ocsinventory_launcher}}"
+  when: ocsinventory_launch_after_install

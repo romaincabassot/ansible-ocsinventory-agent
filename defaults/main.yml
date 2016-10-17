@@ -1,2 +1,14 @@
 ---
-ocsinventory_launcher: "/usr/sbin/ocsinventory-agent -f --server=http://gestionparc.magellium.com/ocsinventory"
+# The command line to make inventory of the host
+ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
+#ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --server=http://myocsserver.domain.com/ocsinventory"
+ocsinventory_launch_after_install: true
+# cronjob options
+ocsinventory_setup_cronjob: true
+ocsinventory_cronjob_name: "ocsinventory-agent"
+ocsinventory_cronjob_user: "root"
+ocsinventory_cronjob_month: "*"
+ocsinventory_cronjob_weekday: "*"
+ocsinventory_cronjob_day: "*"
+ocsinventory_cronjob_hour: "6"
+ocsinventory_cronjob_minute: "0"
