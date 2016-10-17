@@ -1,0 +1,72 @@
+---
+language: python
+sudo: required
+
+services:
+  - docker
+
+env:
+  - OS_VERSION=7
+  - OS_VERSION=6
+
+before_install:
+  - sudo docker pull centos:${OS_VERSION}
+
+install:
+  - sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro --name centos-${OS_VERSION} centos:${OS_VERSION} sleep 300
+  - sudo docker exec centos-${OS_VERSION} yum -y install epel-release
+  - sudo docker exec centos-${OS_VERSION} yum -y install ansible
+  - sudo docker exec centos-${OS_VERSION} ansible-galaxy install geerlingguy.repo-epel
+  - sudo docker exec centos-${OS_VERSION} ansible-galaxy install geerlingguy.repo-remi
+
+script:
+  # Check syntax of ansible playbook
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check
+  # Run ansible playbook
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml
+  # Check inventory was done and inventory file created
+  - sudo docker exec centos-${OS_VERSION} if [ $(find /var/lib/ocsinventory-agent/ -name "*.ocs" | wc -l) -ne 1 ]; then echo "ERROR: The inventory report has not been created."; exit 1; fi;
+  - sudo docker exec centos-${OS_VERSION} find /var/lib/ocsinventory-agent/ -name "*.ocs" -print0 | xargs -0 -n1 xmllint > /dev/null 2>&1; if [ $? -ne 0 ]; then echo "ERROR: The inventory report is not a well formed XML."; exit 1; fi;
+  # Check cronjob creation
+  - sudo docker exec centos-${OS_VERSION} grep ocsinventory-agent /var/spool/cron/root || echo "ERROR: Cronjob seems to not have been created."
+
+after_script:
+  - sudo docker stop centos-${OS_VERSION}
+
+notifications:
+webhooks: https://galaxy.ansible.com/api/v1/notifications/
+
+
+#---
+#language: python
+#python: "2.7"
+#
+# Use the new container infrastructure
+#sudo: false
+#
+#env:
+#  - ANSIBLE_VERSION=latest
+#  - ANSIBLE_VERSION=1.9.4
+#
+# Install ansible
+#addons:
+#  apt:
+#    packages:
+#    - python-pip
+#
+#install:
+#  # Install ansible
+#  - pip install ansible
+#
+#  # Check ansible version
+#  - ansible --version
+#
+#  # Create ansible.cfg with correct roles_path
+#  - printf '[defaults]\nroles_path=../' >ansible.cfg
+#
+#script:
+#  # Basic role syntax check
+#  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+#
+#notifications:
+#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
