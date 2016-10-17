@@ -1,33 +1,65 @@
 ---
 language: python
-python: "2.7"
+sudo: required
 
-# Use the new container infrastructure
-sudo: false
+services:
+  - docker
 
 env:
-  - ANSIBLE_VERSION=latest
-  - ANSIBLE_VERSION=1.9.4
+  - OS_VERSION=7
+  - OS_VERSION=6
 
-# Install ansible
-addons:
-  apt:
-    packages:
-    - python-pip
+before_install:
+  - sudo docker pull centos:${OS_VERSION}
 
 install:
-  # Install ansible
-  - pip install ansible
-
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
+  - sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro --name centos-${OS_VERSION} centos:${OS_VERSION} sleep 300
+  - sudo docker exec centos-${OS_VERSION} yum -y install epel-release
+  - sudo docker exec centos-${OS_VERSION} yum -y install ansible
 
 script:
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+  # Check syntax of ansible playbook
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check
+  # Run ansible playbook
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml
+
+after_script:
+  - sudo docker stop centos-${OS_VERSION}
 
 notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+webhooks: https://galaxy.ansible.com/api/v1/notifications/
+
+
+#---
+#language: python
+#python: "2.7"
+#
+# Use the new container infrastructure
+#sudo: false
+#
+#env:
+#  - ANSIBLE_VERSION=latest
+#  - ANSIBLE_VERSION=1.9.4
+#
+# Install ansible
+#addons:
+#  apt:
+#    packages:
+#    - python-pip
+#
+#install:
+#  # Install ansible
+#  - pip install ansible
+#
+#  # Check ansible version
+#  - ansible --version
+#
+#  # Create ansible.cfg with correct roles_path
+#  - printf '[defaults]\nroles_path=../' >ansible.cfg
+#
+#script:
+#  # Basic role syntax check
+#  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+#
+#notifications:
+#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
