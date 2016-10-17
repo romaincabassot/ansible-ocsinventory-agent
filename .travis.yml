@@ -23,10 +23,10 @@ script:
   # Check syntax of ansible playbook
   - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check
   # Run ansible playbook
-  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --connection=local
+  - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml
   # Run the playbook again, checking to make sure it's idempotent
   - >
-      sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --connection=local
+      sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml
       | grep -q 'changed=0.*failed=0'
       && (echo 'Idempotence test: pass' && exit 0)
       || (echo 'Idempotence test: fail' && exit 1)
