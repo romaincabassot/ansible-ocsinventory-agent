@@ -25,7 +25,7 @@ script:
   # Run ansible playbook
   - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml
   # Check inventory and cronjob
-  - sudo docker exec centos-${OS_VERSION} bash /etc/ansible/roles/ocsinventory-agent/test/travis_check.sh
+  - sudo docker exec centos-${OS_VERSION} bash /etc/ansible/roles/ocsinventory-agent/tests/travis_check.sh
 
 after_script:
   - sudo docker stop centos-${OS_VERSION}
