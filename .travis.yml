@@ -24,11 +24,8 @@ script:
   - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check
   # Run ansible playbook
   - sudo docker exec centos-${OS_VERSION} ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml
-  # Check inventory was done and inventory file created
-  - sudo docker exec centos-${OS_VERSION} if [ $(find /var/lib/ocsinventory-agent/ -name "*.ocs" | wc -l) -ne 1 ]; then echo "ERROR: The inventory report has not been created."; exit 1; fi;
-  - sudo docker exec centos-${OS_VERSION} find /var/lib/ocsinventory-agent/ -name "*.ocs" -print0 | xargs -0 -n1 xmllint > /dev/null 2>&1; if [ $? -ne 0 ]; then echo "ERROR: The inventory report is not a well formed XML."; exit 1; fi;
-  # Check cronjob creation
-  - sudo docker exec centos-${OS_VERSION} grep ocsinventory-agent /var/spool/cron/root || echo "ERROR: Cronjob seems to not have been created."
+  # Check inventory and cronjob
+  - sudo docker exec centos-${OS_VERSION} bash /etc/ansible/roles/ocsinventory-agent/test/travis_check.sh
 
 after_script:
   - sudo docker stop centos-${OS_VERSION}
