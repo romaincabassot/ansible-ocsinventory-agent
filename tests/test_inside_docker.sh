@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -xe
 
 # Check inventory was done and inventory file created
 if [ $(find /var/lib/ocsinventory-agent/ -name "*.ocs" | wc -l) -ne 1 ]; then

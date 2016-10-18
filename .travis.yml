@@ -1,40 +1,20 @@
----
-language: python
 sudo: required
-
+env:
+  matrix:
+  - OS_TYPE=centos OS_VERSION=6
+  - OS_TYPE=centos OS_VERSION=7
+  
 services:
   - docker
-
-env:
-  - OS_VERSION=7
-  - OS_VERSION=6
-
+  
 before_install:
-  - sudo docker pull centos:${OS_VERSION}
+  - sudo apt-get update
+  - echo 'DOCKER_OPTS="-H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock -s devicemapper"' | sudo tee /etc/default/docker > /dev/null
+  - sudo service docker restart
+  - sleep 5
+  - sudo docker pull centos:centos${OS_VERSION}
 
-install:
-  - sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro --name centos-${OS_VERSION} centos:${OS_VERSION} sleep 300
-  - sudo docker exec centos-${OS_VERSION} yum -y install epel-release
-  - sudo docker exec centos-${OS_VERSION} yum -y install ansible
-  - sudo docker exec centos-${OS_VERSION} ansible-galaxy install geerlingguy.repo-epel
-  - sudo docker exec centos-${OS_VERSION} ansible-galaxy install geerlingguy.repo-remi
-
+  
 script:
-  # Check syntax of ansible playbook
-  - sudo docker exec centos-${OS_VERSION} ansible-playbook -i /etc/ansible/roles/ocsinventory-agent/tests/inventory /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check
-  # Run ansible playbook
-  - sudo docker exec centos-${OS_VERSION} ansible-playbook -i /etc/ansible/roles/ocsinventory-agent/tests/inventory /etc/ansible/roles/ocsinventory-agent/tests/test.yml
-  # Run the playbook again, checking to make sure it's idempotent
-  - >
-      sudo docker exec centos-${OS_VERSION} ansible-playbook -i /etc/ansible/roles/ocsinventory-agent/tests/inventory /etc/ansible/roles/ocsinventory-agent/tests/test.yml
-      | grep -q 'changed=0.*failed=0'
-      && (echo 'Idempotence test: pass' && exit 0)
-      || (echo 'Idempotence test: fail' && exit 1)
-  # Check inventory and cronjob
-  - sudo docker exec centos-${OS_VERSION} bash /etc/ansible/roles/ocsinventory-agent/tests/travis_check.sh
-
-after_script:
-  - sudo docker stop centos-${OS_VERSION}
-
-notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+ # Run tests in Container
+- tests/docker_setup.sh ${OS_VERSION}
