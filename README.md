@@ -56,4 +56,4 @@ BSD
 Author Information
 ------------------
 
-https://www.romain-cabassot.fr/
+Romain CABASSOT
