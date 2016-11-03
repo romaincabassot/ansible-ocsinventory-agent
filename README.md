@@ -1,7 +1,11 @@
 ocsinventory-agent
 =========
 
+Version : 1.0.0
+
 Installs OCS inventory agent from [Remi repository](http://rpms.famillecollet.com/) and setup inventory in the cron.
+
+
 
 Requirements
 ------------
