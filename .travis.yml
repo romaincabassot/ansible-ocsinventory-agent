@@ -24,7 +24,8 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==2.2.0'
 
   # Install the ansible galaxy roles included in the test playbook
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel && ansible-galaxy install geerlingguy.repo-remi'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-remi'
 
   # Ansible syntax check.
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --syntax-check'
