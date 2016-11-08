@@ -32,7 +32,7 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check'
 
   # Test role.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/ocsinventory-agent/tests/test.yml'
 
   # Test role idempotence.
   - idempotence=$(mktemp)
