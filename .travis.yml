@@ -19,7 +19,9 @@ script:
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
 
   # Remove default Ansible version and install the 2.2
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y remove ansible && yum -y install python-pip && pip install ansible==2.2.0'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y remove ansible'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==2.2.0'
 
   # Install the ansible galaxy roles included in the test playbook
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel && ansible-galaxy install geerlingguy.repo-remi'
