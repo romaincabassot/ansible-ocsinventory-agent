@@ -34,6 +34,9 @@ script:
   # Test role.
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/ocsinventory-agent/tests/test.yml'
 
+  # Debug OCS inventory log if file exist
+  - 'echo "ocsinventory-agent.log:"; if [ -f /var/log/ocsinventory-agent/ocsinventory-agent.log ]; then cat /var/log/ocsinventory-agent/ocsinventory-agent.log; fi'
+
   # Test role idempotence.
   - idempotence=$(mktemp)
   - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml | tee -a ${idempotence}
