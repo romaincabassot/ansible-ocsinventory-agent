@@ -2,25 +2,27 @@
 services: docker
 
 env:
-  - distro: centos7
+  - distro: centos
+    distro_version: 7
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-  - distro: centos6
+  - distro: centos
+    distro_version: 6
     init: /sbin/init
     run_opts: ""
 
 before_install:
   # Pull container.
-  - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
+  - 'docker pull ${distro}:${distro_version}'
 
 script:
   - container_id=$(mktemp)
   # Run container in detached state.
-  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"'
 
   # Remove default Ansible version and install the 2.2
-  - if [[ "${distro}" == "centos6" ]]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel; fi
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y remove ansible'
+  - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel; fi
+  #- 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y remove ansible'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==2.2.0'
 
