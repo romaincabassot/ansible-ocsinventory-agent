@@ -29,9 +29,7 @@ Role Variables
 Dependencies
 ------------
 
-Role dependencies: 
-- geerlingguy.repo-remi
-- geerlingguy.repo-epel
+A repository from which pull the ocsinventory-agent package (for example [remi repository](http://rpms.famillecollet.com/)).  
 
 Example Playbook
 ----------------

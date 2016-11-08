@@ -2,6 +2,8 @@
 - hosts: localhost
   remote_user: root
   roles:
+   - geerlingguy.repo-epel
+   - geerlingguy.repo-remi
    - {
        role: ocsinventory-agent,
        ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent",
