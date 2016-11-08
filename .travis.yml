@@ -34,7 +34,8 @@ script:
   # Test role.
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/ocsinventory-agent/tests/test.yml'
 
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm usr/sbin/ocsinventory-agent --stdout'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/sbin/ocsinventory-agent --stdout'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent'
 
   # Debug OCS inventory log if file exist
   - 'echo "ocsinventory-agent.log:"; if [ -f /var/log/ocsinventory-agent/ocsinventory-agent.log ]; then cat /var/log/ocsinventory-agent/ocsinventory-agent.log; fi'
