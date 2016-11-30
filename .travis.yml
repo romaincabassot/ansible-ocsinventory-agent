@@ -25,11 +25,12 @@ script:
   # Ansible installation via pip
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel openssl-devel findutils'
 
+  # Install EPEL repository for pip package installation
   - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm; fi
   - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "7" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; fi
 
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl'
+  - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl; fi
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install --upgrade pip'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}'
 
