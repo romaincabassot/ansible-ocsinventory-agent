@@ -30,7 +30,7 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel openssl-devel findutils'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install --upgrade pip'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}'
 
