@@ -13,4 +13,4 @@ if [ $? -ne 0 ]; then
 fi
 
  # Check cronjob creation
-grep ocsinventory-agent /var/spool/cron/root > /dev/null 2>&1 || (echo "ERROR: Cronjob seems to not have been created." && exit 1)
+grep ocsinventory-agent-test-install /var/spool/cron/root > /dev/null 2>&1 || (echo "ERROR: Cronjob seems to not have been created." && exit 1)
