@@ -6,10 +6,12 @@ env:
     distro_version: 7
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: 2.2.0
   - distro: centos
     distro_version: 6
     init: /sbin/init
     run_opts: ""
+    ansible_version: 2.2.0
 
 before_install:
   # Pull container.
@@ -21,10 +23,15 @@ script:
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"'
 
   # Remove default Ansible version and install the 2.2
-  - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel; fi
+  #- if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel; fi
   #- 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y remove ansible'
+
+  # Ansible installation via pip
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel openssl-devel findutils'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==2.2.0'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install --upgrade pip'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}'
 
   # Install the ansible galaxy roles included in the test playbook
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel'
@@ -52,7 +59,7 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
 
   # Run tests in Container
-  - '. tests/test_inside_docker.sh'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /bin/bash /etc/ansible/roles/ocsinventory-agent/tests/test_inside_docker.sh'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
