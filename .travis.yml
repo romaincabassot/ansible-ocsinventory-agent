@@ -30,8 +30,8 @@ script:
   - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "7" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; fi
 
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
-  - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl; fi
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install --upgrade pip'
+  - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl; fi
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}'
 
   # Install the ansible galaxy roles included in the test playbook
