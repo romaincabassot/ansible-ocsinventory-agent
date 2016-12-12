@@ -1,9 +1,9 @@
-ocsinventory-agent
+romaincabassot.ansible-ocsinventory-agent
 =========
 
-Version : 1.0.0
+Version : 1.0.1
 
-Installs OCS inventory agent from [Remi repository](http://rpms.famillecollet.com/) and setup inventory in the cron.
+Installs OCS inventory agent from a package repository and can setup the cron to launch the inventory.
 
 
 
@@ -25,6 +25,8 @@ Role Variables
 - **ocsinventory_cronjob_day**: "*"
 - **ocsinventory_cronjob_hour**: "6"
 - **ocsinventory_cronjob_minute**: "0"
+- **ocsinventory_package_name**: "ocsinventory-agent"
+- **ocsinventory_package_repository**: "remi"
 
 Dependencies
 ------------
@@ -48,6 +50,7 @@ Example Playbook
              ocsinventory_cronjob_day: "*"
              ocsinventory_cronjob_hour: "6"
              ocsinventory_cronjob_minute: "0"
+             
            }
 
 License
