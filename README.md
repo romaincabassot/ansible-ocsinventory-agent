@@ -16,21 +16,21 @@ Role Variables
 --------------
 
     # Ocsinventory launch options
-    # --------------------------
-    # The command line to launch in order to make inventory of the host
+    # ---------------------------
+    # The command line to call for launching the host inventory
     ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
-    # Specify if Ocs should make inventory of the host after a new installation of the agent
+    # If it launches the host inventory after an installation of the agent
     ocsinventory_launch_after_install: true
     
     # Cronjob options
     # ---------------
     # True to create a cronjob for host inventory
     ocsinventory_setup_cronjob: true
-    # Name of the cronob task
+    # Name of the cronjob task
     ocsinventory_cronjob_name: "ocsinventory-agent"
     # User running the job
     ocsinventory_cronjob_user: "root"
-    # When to execute the job...
+    # When to execute the job
     ocsinventory_cronjob_month: "*"
     ocsinventory_cronjob_weekday: "*"
     ocsinventory_cronjob_day: "*"
