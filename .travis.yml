@@ -92,10 +92,10 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-remi'
 
   # Ansible syntax check.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -c local -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory --syntax-check'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory --syntax-check'
 
   # Test role.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -c local -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory'
 
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/sbin/ocsinventory-agent --stdout'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent'
@@ -105,7 +105,7 @@ script:
 
   # Test role idempotence.
   - idempotence=$(mktemp)
-  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -c local -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory | tee -a ${idempotence}
+  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory | tee -a ${idempotence}
   - >
     tail ${idempotence}
     | grep -q 'changed=0.*failed=0'
