@@ -2,11 +2,43 @@
 services: docker
 
 env:
+# CentOS 7
+  - distro: centos
+    distro_version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: "1.9.6"
+  - distro: centos
+    distro_version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: "2.0.2"
+  - distro: centos
+    distro_version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    ansible_version: "2.1.3"
   - distro: centos
     distro_version: 7
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     ansible_version: "2.2.0"
+# CentOS 6
+  - distro: centos
+    distro_version: 6
+    init: /sbin/init
+    run_opts: ""
+    ansible_version: "1.9.6"
+  - distro: centos
+    distro_version: 6
+    init: /sbin/init
+    run_opts: ""
+    ansible_version: "2.0.2"
+  - distro: centos
+    distro_version: 6
+    init: /sbin/init
+    run_opts: ""
+    ansible_version: "2.1.3"
   - distro: centos
     distro_version: 6
     init: /sbin/init
@@ -20,7 +52,7 @@ before_install:
 script:
   - container_id=$(mktemp)
   # Run container in detached state.
-  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"'
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"'
 
   # Ansible installation via pip
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel openssl-devel findutils'
@@ -32,6 +64,7 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install python-pip'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install --upgrade pip'
   - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl; fi
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install setuptools --upgrade'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}'
 
   # Install the ansible galaxy roles included in the test playbook
@@ -39,10 +72,10 @@ script:
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-remi'
 
   # Ansible syntax check.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml --syntax-check'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory --syntax-check'
 
   # Test role.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/ocsinventory-agent/tests/test.yml'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -vvv /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory'
 
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/sbin/ocsinventory-agent --stdout'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent'
@@ -52,7 +85,7 @@ script:
 
   # Test role idempotence.
   - idempotence=$(mktemp)
-  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/ocsinventory-agent/tests/test.yml | tee -a ${idempotence}
+  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory | tee -a ${idempotence}
   - >
     tail ${idempotence}
     | grep -q 'changed=0.*failed=0'
@@ -60,7 +93,7 @@ script:
     || (echo 'Idempotence test: fail' && exit 1)
 
   # Run tests in Container
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /bin/bash /etc/ansible/roles/ocsinventory-agent/tests/test_inside_docker.sh'
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm /bin/bash /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test_inside_docker.sh'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
