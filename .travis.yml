@@ -86,6 +86,9 @@ script:
   - if [ "${distro}" == "centos" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install pyopenssl; fi
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}'
 
+  # Python setuptools update
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install setuptools --upgrade'
+
   # Install the ansible galaxy roles included in the test playbook
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel'
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-remi'
