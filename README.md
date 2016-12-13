@@ -1,35 +1,54 @@
-ocsinventory-agent
+romaincabassot.ansible-ocsinventory-agent
 =========
 
-Version : 1.0.0
+Version : 1.0.1
 
-Installs OCS inventory agent from [Remi repository](http://rpms.famillecollet.com/) and setup inventory in the cron.
+Installs OCS inventory agent from a package repository and can setup the cron to launch the inventory.
 
 
 
 Requirements
 ------------
 
-None.
+A repository from which pull the Ocsinventory agent package (for example [remi repository](http://rpms.famillecollet.com/)).
 
 Role Variables
 --------------
 
-- **ocsinventory_launcher**: /usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent 
-- **ocsinventory_launch_after_install**: true
-- **ocsinventory_setup_cronjob**: true
-- **ocsinventory_cronjob_name**: "ocsinventory-agent"
-- **ocsinventory_cronjob_user**: "root"
-- **ocsinventory_cronjob_month**: "*"
-- **ocsinventory_cronjob_weekday**: "*"
-- **ocsinventory_cronjob_day**: "*"
-- **ocsinventory_cronjob_hour**: "6"
-- **ocsinventory_cronjob_minute**: "0"
+    # Ocsinventory launch options
+    # ---------------------------
+    # The command line to call for launching the host inventory
+    ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
+    # If it launches the host inventory after an installation of the agent
+    ocsinventory_launch_after_install: true
+    
+    # Cronjob options
+    # ---------------
+    # True to create a cronjob for host inventory
+    ocsinventory_setup_cronjob: true
+    # Name of the cronjob task
+    ocsinventory_cronjob_name: "ocsinventory-agent"
+    # User running the job
+    ocsinventory_cronjob_user: "root"
+    # When to execute the job
+    ocsinventory_cronjob_month: "*"
+    ocsinventory_cronjob_weekday: "*"
+    ocsinventory_cronjob_day: "*"
+    ocsinventory_cronjob_hour: "6"
+    ocsinventory_cronjob_minute: "0"
+    
+    # Installation package configuration
+    # ----------------------------------
+    # Name of the package to install
+    ocsinventory_package_name: "ocsinventory-agent"
+    # Name of the package's repository
+    ocsinventory_package_repository: "remi"
+
 
 Dependencies
 ------------
 
-A repository from which pull the ocsinventory-agent package (for example [remi repository](http://rpms.famillecollet.com/)).  
+None.  
 
 Example Playbook
 ----------------

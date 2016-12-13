@@ -1,14 +1,29 @@
 ---
-# The command line to make inventory of the host
+# Ocsinventory launch options
+# ---------------------------
+# The command line to call for launching the host inventory
 ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
-#ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --server=http://myocsserver.domain.com/ocsinventory"
+# If it launches the host inventory after an installation of the agent
 ocsinventory_launch_after_install: true
-# cronjob options
+
+# Cronjob options
+# ---------------
+# True to create a cronjob for host inventory
 ocsinventory_setup_cronjob: true
+# Name of the cronjob task
 ocsinventory_cronjob_name: "ocsinventory-agent"
+# User running the job
 ocsinventory_cronjob_user: "root"
+# When to execute the job
 ocsinventory_cronjob_month: "*"
 ocsinventory_cronjob_weekday: "*"
 ocsinventory_cronjob_day: "*"
 ocsinventory_cronjob_hour: "6"
 ocsinventory_cronjob_minute: "0"
+
+# Installation package configuration
+# ----------------------------------
+# Name of the package to install
+ocsinventory_package_name: "ocsinventory-agent"
+# Name of the package's repository
+ocsinventory_package_repository: "remi"
