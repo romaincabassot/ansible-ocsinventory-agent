@@ -2,21 +2,20 @@
 services: docker
 
 env:
-  - distro: centos
-    distro_version: 7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-  - distro: centos
-    distro_version: 6
-    init: /sbin/init
-    run_opts: ""
-ansible_version:
-  - "1.7.0"
-  - "1.8.0"
-  - "1.9.0"
-  - "2.0.0"
-  - "2.1.0"
-  - "2.2.0"
+# CentOS 7
+  - distro: centos distro_version: 7  init: /usr/lib/systemd/systemd  run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"  ansible_version: "1.7.2"
+  - distro: centos distro_version: 7  init: /usr/lib/systemd/systemd  run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"  ansible_version: "1.8.4"
+  - distro: centos distro_version: 7  init: /usr/lib/systemd/systemd  run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"  ansible_version: "1.9.6"
+  - distro: centos distro_version: 7  init: /usr/lib/systemd/systemd  run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"  ansible_version: "2.0.2"
+  - distro: centos distro_version: 7  init: /usr/lib/systemd/systemd  run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"  ansible_version: "2.1.3"
+  - distro: centos distro_version: 7  init: /usr/lib/systemd/systemd  run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"  ansible_version: "2.2.0"
+# CentOS 6
+  - distro: centos distro_version: 6  init: /sbin/init                run_opts: ""                                                        ansible_version: "1.7.2"
+  - distro: centos distro_version: 6  init: /sbin/init                run_opts: ""                                                        ansible_version: "1.8.4"
+  - distro: centos distro_version: 6  init: /sbin/init                run_opts: ""                                                        ansible_version: "1.9.6"
+  - distro: centos distro_version: 6  init: /sbin/init                run_opts: ""                                                        ansible_version: "2.0.2"
+  - distro: centos distro_version: 6  init: /sbin/init                run_opts: ""                                                        ansible_version: "2.1.3"
+  - distro: centos distro_version: 6  init: /sbin/init                run_opts: ""                                                        ansible_version: "2.2.0"
 
 before_install:
   # Pull container.
