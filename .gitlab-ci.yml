@@ -2,5 +2,7 @@ image: centos:7
 
 test:
   stage: test
-  script: 
-    - cat  README.md | grep -q 'OCS'
+  script:
+    - uname -a
+    - cat /etc/redhat-release
+    - pwd
