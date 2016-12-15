@@ -1,2 +1,5 @@
+image: centos:7
+
 test:
+  stage: test
   script: cat  README.md | grep -q 'OCS'
