@@ -4,5 +4,5 @@ test:
   stage: test
   script:
     - uname -a
-    - cat /etc/debian-release
+    - cat /etc/debian_release
     - pwd
