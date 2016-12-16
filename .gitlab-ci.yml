@@ -1,8 +1,24 @@
 image: ubuntu:16.04
 
-test:
+stages:
+  - test
+
+variables:
+  CI_DEBUG_TRACE: "true"
+
+.template:testing_distro: &testing_distro
+  # Run only on docker tagger runners
+  tags: docker
   stage: test
   script:
-    - uname -a
-    - cat /etc/debian_version
-    - pwd
+    - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts="${run_opts} AnsibleVersion=${ansible_version}"
+
+
+testing:centos6_ansible1.9:
+  variables:
+    distro: "centos"
+    distro_version: "6"
+    init: "/sbin/init"
+    run_opts: ""
+    ansible_version: "1.9.6"
+  <<: *testing_distro
