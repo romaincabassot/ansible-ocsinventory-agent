@@ -21,7 +21,7 @@ services:
   tags: [ "docker" ]
   stage: test
   script:
-  - /bin/bash ${CI_PROJECT_DIR}/tests/docker.sh
+  - /bin/sh ${CI_PROJECT_DIR}/tests/docker.sh
 
 testing:centos6_ansible1.9:
   variables:
