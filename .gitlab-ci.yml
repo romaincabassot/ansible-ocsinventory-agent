@@ -8,7 +8,7 @@ variables:
 
 .template:testing_distro: &testing_distro
   # Run only on docker tagger runners
-  tags: docker
+  tags: [ "docker" ]
   stage: test
   script:
     - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts="${run_opts} AnsibleVersion=${ansible_version}"
