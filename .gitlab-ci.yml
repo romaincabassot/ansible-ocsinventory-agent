@@ -21,7 +21,7 @@ services:
   tags: [ "docker" ]
   stage: test
   script:
-  - /bin/sh ${CI_PROJECT_DIR}/tests/docker.sh ${distro} ${distro_version} ${init} ${run_opts} ${ansible_version}
+  - /bin/sh ${CI_PROJECT_DIR}/tests/docker.sh "${distro}" "${distro_version}" "${init}" "${run_opts}" "${ansible_version}"
 
 testing:centos6_ansible1.9:
   variables:
