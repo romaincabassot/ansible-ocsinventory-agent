@@ -44,10 +44,9 @@ echo "ocsinventory-agent.log:"; if [ -f /var/log/ocsinventory-agent/ocsinventory
 # Test role idempotence.
 idempotence=$(mktemp)
 docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test.yml -i /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/inventory | tee -a ${idempotence}
->
-tail ${idempotence}
-| grep -q 'changed=0.*failed=0'
-&& (echo 'Idempotence test: pass' && exit 0)
+tail ${idempotence} \
+| grep -q 'changed=0.*failed=0' \
+&& (echo 'Idempotence test: pass' && exit 0) \
 || (echo 'Idempotence test: fail' && exit 1)
 
 # Run tests in Container
