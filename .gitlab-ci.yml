@@ -3,17 +3,27 @@ image: ubuntu:16.04
 stages:
   - test
 
-#variables:
+before_script:
+- uname -a
+- locale
+- whoami
+- apt-get update && apt-get -y install docker.io
+
+variables:
 #  CI_DEBUG_TRACE: "true"
+  DOCKER_DRIVER: overlay
+
+services:
+- docker:dind
 
 .template:testing_distro: &testing_distro
   # Run only on docker tagger runners
   tags: [ "docker" ]
   stage: test
   script:
-    - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts=${run_opts} AnsibleVersion=${ansible_version} container_id=${container_id}"
-    - docker run --detach --volume="${CI_PROJECT_DIR}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
-    - docker top "${container_id}"
+  - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts=${run_opts} AnsibleVersion=${ansible_version} container_id=${container_id}"
+  - docker run --detach --volume="${CI_PROJECT_DIR}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
+  - docker top "${container_id}"
 
 
 
