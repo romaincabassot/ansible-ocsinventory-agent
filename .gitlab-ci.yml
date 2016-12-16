@@ -1,0 +1,8 @@
+image: ubuntu:16.04
+
+test:
+  stage: test
+  script:
+    - uname -a
+    - cat /etc/debian_version
+    - pwd
