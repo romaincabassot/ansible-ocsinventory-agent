@@ -11,7 +11,7 @@ variables:
   tags: [ "docker" ]
   stage: test
   script:
-    - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts="${run_opts} AnsibleVersion=${ansible_version}"
+    - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts=${run_opts} AnsibleVersion=${ansible_version}"
 
 
 testing:centos6_ansible1.9:
