@@ -21,10 +21,7 @@ services:
   tags: [ "docker" ]
   stage: test
   script:
-  - container_id="$(mktemp)"
-  - echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts=${run_opts} AnsibleVersion=${ansible_version} container_id=${container_id}"
-  - docker run --detach --volume="${CI_PROJECT_DIR}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
-  - docker top "${container_id}"
+  - /bin/bash ${CI_PROJECT_DIR}/tests/docker.sh
 
 testing:centos6_ansible1.9:
   variables:
