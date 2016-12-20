@@ -1,4 +1,7 @@
 ---
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
 - name: selinux support under EL 6
   yum: name=libselinux-python state=present
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
@@ -6,6 +9,12 @@
 - name: Install OCS inventory agent
   yum: name={{ ocsinventory_package_name }} state=present enablerepo={{ ocsinventory_package_repository }}
   notify: Launch ocs inventory
+  when: ansible_os_family == "RedHat"
+
+- name: Install OCS inventory agent
+  apt: name={{ ocsinventory_package_name }} state=present
+  notify: Launch ocs inventory
+  when: ansible_os_family == "Debian"
 
 - name: Remove default local option from ocsinventory-agent.cfg
   lineinfile: dest=/etc/ocsinventory/ocsinventory-agent.cfg
@@ -20,6 +29,6 @@
         day="{{ ocsinventory_cronjob_day }}"
         hour="{{ ocsinventory_cronjob_hour }}"
         minute="{{ ocsinventory_cronjob_minute }}"
-        job="{{ocsinventory_launcher}}"
+        job="{{ocsinventory_binary}} {{ocsinventory_launch_options}}"
   when: ocsinventory_setup_cronjob
 

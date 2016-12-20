@@ -2,7 +2,9 @@
 # Ocsinventory launch options
 # ---------------------------
 # The command line to call for launching the host inventory
-ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
+#ocsinventory_launcher: "{{ocsinventory_binary }} --local=/var/lib/ocsinventory-agent"
+# The options to add when invoking the ocs inventory agent binary
+ocsinventory_launch_options: "--local=/var/lib/ocsinventory-agent"
 # If it launches the host inventory after an installation of the agent
 ocsinventory_launch_after_install: true
 
