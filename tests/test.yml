@@ -6,7 +6,6 @@
    - geerlingguy.repo-remi
    - {
        role: romaincabassot.ansible-ocsinventory-agent,
-       ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent",
        ocsinventory_launch_after_install: true,
        ocsinventory_setup_cronjob: true,
        ocsinventory_cronjob_name: "ocsinventory-agent-test-install",
