@@ -44,7 +44,7 @@ if [ "${distro_family}" == "redhat" ]; then
 elif [ "${distro_family}" == "debian" ]; then
     docker exec --tty "$(cat ${container_id})" env TERM=xterm apt-key update
     docker exec --tty "$(cat ${container_id})" env TERM=xterm apt-get update
-    docker exec --tty "$(cat ${container_id})" env TERM=xterm apt-get -y install python-pip python-dev findutils libssl-dev libxml2-utils cron
+    docker exec --tty "$(cat ${container_id})" env TERM=xterm apt-get -y install python-pip python-dev findutils libssl-dev libxml2-utils cron ca-certificates
     docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install markupsafe
 fi
 docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install --upgrade pip
