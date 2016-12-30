@@ -4,7 +4,7 @@ stages:
   - test
 
 variables:
-  DOCKER_DRIVER: overlay
+  DOCKER_DRIVER: aufs
   ANSIBLE1_9: "1.9.6"
   ANSIBLE2_0: "2.0.2"
   ANSIBLE2_1: "2.1.3"
