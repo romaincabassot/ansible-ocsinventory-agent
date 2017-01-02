@@ -6,13 +6,13 @@
   yum: name=libselinux-python state=present
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
 
-- name: Install OCS inventory agent
-  yum: name={{ ocsinventory_package_name }} state=present enablerepo={{ ocsinventory_package_repository }}
+- name: Install OCS inventory agent on RedHat OS family
+  yum: name={{ ocsinventory_package_name }} state=present enablerepo={{ ocsinventory_yum_repository }}
   notify: Launch ocs inventory
   when: ansible_os_family == "RedHat"
 
-- name: Install OCS inventory agent
-  apt: name={{ ocsinventory_package_name }} state=present
+- name: Install OCS inventory agent on Debian OS family
+  apt: name={{ ocsinventory_package_name }} state=present default_release={{ ocsinventory_apt_target_release }}
   notify: Launch ocs inventory
   when: ansible_os_family == "Debian"
 

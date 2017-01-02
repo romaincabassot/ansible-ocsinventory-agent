@@ -27,5 +27,7 @@ ocsinventory_cronjob_minute: "0"
 # ----------------------------------
 # Name of the package to install
 ocsinventory_package_name: "ocsinventory-agent"
-# Name of the package's repository
-ocsinventory_package_repository: "remi"
+# Name of the yum package's repository
+ocsinventory_yum_repository: "remi"
+# Apt ocsinventory agent target-release (-t, --target-release, --default-release )
+ocsinventory_apt_target_release: ""
