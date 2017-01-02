@@ -42,6 +42,7 @@ if [ "${distro_family}" == "redhat" ] && [ "${distro_version}" == "7" ]; then do
 if [ "${distro_family}" == "redhat" ]; then
     docker exec --tty "$(cat ${container_id})" env TERM=xterm yum -y install gcc gmp-devel python-devel openssl-devel findutils python-pip
 elif [ "${distro_family}" == "debian" ]; then
+    docker exec --tty "$(cat ${container_id})" env TERM=xterm ls -l /
     docker exec --tty "$(cat ${container_id})" env TERM=xterm touch /tmp/TEST
     docker exec --tty "$(cat ${container_id})" env TERM=xterm strace -e open apt-key update
     docker exec --tty "$(cat ${container_id})" env TERM=xterm apt-get update
