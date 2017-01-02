@@ -10,8 +10,8 @@ variables:
   ANSIBLE2_1: "2.1.3"
   ANSIBLE2_2: "2.2.0"
 
-services:
-- docker:dind
+#services:
+#- docker:dind
 
 .template:testing_distro: &testing_distro
   # Run only on docker tagged runners
