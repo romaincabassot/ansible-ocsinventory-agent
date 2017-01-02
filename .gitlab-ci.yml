@@ -51,7 +51,7 @@ testing:ubuntu16.04_ansible2.2:
   variables:
     distro: "ubuntu"
     distro_version: "16.04"
-    init: "/sbin/init"
+    init: "/lib/systemd/systemd"
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     ansible_version: ${ANSIBLE2_2}
   <<: *testing_distro
