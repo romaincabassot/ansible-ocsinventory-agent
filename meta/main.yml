@@ -118,8 +118,8 @@ galaxy_info:
   #  - 9.1
   #  - 9.2
   #  - 9.3
-  #- name: Ubuntu
-  #  versions:
+  - name: Ubuntu
+    versions:
   #  - all
   #  - lucid
   #  - maverick
@@ -129,21 +129,21 @@ galaxy_info:
   #  - quantal
   #  - raring
   #  - saucy
-  #  - trusty
+    - trusty
   #  - utopic
   #  - vivid
   #  - wily
-  #  - xenial
-  #- name: Debian
-  #  versions:
+    - xenial
+  - name: Debian
+    versions:
   #  - all
   #  - etch
-  #  - jessie
+    - jessie
   #  - lenny
   #  - sid
   #  - squeeze
   #  - stretch
-  #  - wheezy
+    - wheezy
   - name: EL
     versions:
   #  - all
