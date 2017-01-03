@@ -1,9 +1,9 @@
 romaincabassot.ansible-ocsinventory-agent
 =========
 
-Version : 1.0.1
+Version : 1.0.2
 
-Installs OCS inventory agent from a package repository and can setup the cron to launch the inventory.
+Installs OCS inventory agent from a package repository and optionally setup the cron to launch the inventory.
 
 
 
@@ -17,8 +17,10 @@ Role Variables
 
     # Ocsinventory launch options
     # ---------------------------
-    # The command line to call for launching the host inventory
-    ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
+    # The path to the ocsinventory binary file is defined in the OS vars but can be overriden
+    ocsinventory_binary: "/usr/sbin/ocsinventory-agent"
+    # The options to add when invoking the ocs inventory agent binary
+    ocsinventory_launch_options: "--local=/var/lib/ocsinventory-agent"
     # If it launches the host inventory after an installation of the agent
     ocsinventory_launch_after_install: true
     
@@ -41,8 +43,10 @@ Role Variables
     # ----------------------------------
     # Name of the package to install
     ocsinventory_package_name: "ocsinventory-agent"
-    # Name of the package's repository
-    ocsinventory_package_repository: "remi"
+    # Name of the yum package's repository
+    ocsinventory_yum_repository: "remi"
+    # Apt ocsinventory agent target-release (-t, --target-release, --default-release )
+    ocsinventory_apt_target_release: ""
 
 
 Dependencies
@@ -53,11 +57,14 @@ None.
 Example Playbook
 ----------------
 
+Install the Ocsinventory agent then launch the inventory of the machine and send it to http://myocsserver.domain.com/ocsinventory.
+Setup a root cronjob named "ocsinventory-agent" scheduled at 6AM everyday that launches the inventory of the machine and send it to http://myocsserver.domain.com/ocsinventory.
+
     - hosts: servers
       roles:
          - { 
              role: ocsinventory-agent, 
-             ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --server=http://myocsserver.domain.com/ocsinventory",
+             ocsinventory_launch_options: "--server=http://myocsserver.domain.com/ocsinventory",
              ocsinventory_launch_after_install: true
              ocsinventory_setup_cronjob: true
              ocsinventory_cronjob_name: "ocsinventory-agent"

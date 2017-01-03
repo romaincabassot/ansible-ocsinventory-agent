@@ -1,8 +1,10 @@
 ---
 # Ocsinventory launch options
 # ---------------------------
-# The command line to call for launching the host inventory
-ocsinventory_launcher: "/usr/sbin/ocsinventory-agent --local=/var/lib/ocsinventory-agent"
+# The path to the ocsinventory binary file is defined in the OS vars or can be overriden
+# ocsinventory_binary
+# The options to add when invoking the ocs inventory agent binary
+ocsinventory_launch_options: "--local=/var/lib/ocsinventory-agent"
 # If it launches the host inventory after an installation of the agent
 ocsinventory_launch_after_install: true
 
@@ -25,5 +27,7 @@ ocsinventory_cronjob_minute: "0"
 # ----------------------------------
 # Name of the package to install
 ocsinventory_package_name: "ocsinventory-agent"
-# Name of the package's repository
-ocsinventory_package_repository: "remi"
+# Name of the yum package's repository
+ocsinventory_yum_repository: "remi"
+# Apt ocsinventory agent target-release (-t, --target-release, --default-release )
+ocsinventory_apt_target_release: ""
