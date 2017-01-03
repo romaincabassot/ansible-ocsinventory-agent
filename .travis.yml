@@ -59,7 +59,7 @@ before_install:
   - 'docker pull ${distro}:${distro_version}'
 
 script:
-  - /bin/sh ${PWD}/tests/docker.sh "${distro}" "${distro_version}" "${init}" "${run_opts}" "${ansible_version}" "${PWD}"
+  - /bin/bash "${PWD}/tests/docker.sh" "${distro}" "${distro_version}" "${init}" "${run_opts}" "${ansible_version}" "${PWD}"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
