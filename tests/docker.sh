@@ -54,7 +54,7 @@ docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install setuptools
 docker exec --tty "$(cat ${container_id})" env TERM=xterm pip install ansible==${ansible_version}
 
 # Install the ansible galaxy roles included in the test playbook
-docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel
+docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-epel,1.2.0
 docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-galaxy install geerlingguy.repo-remi
 
 # Ansible role syntax check.
