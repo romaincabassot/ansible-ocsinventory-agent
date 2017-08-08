@@ -32,7 +32,7 @@ case "${distro}" in
         exit 1
 esac
 
-docker run --detach --volume="${local_role_path}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
+docker run --detach --volume="${local_role_path}:/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro" ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
 
 # Install EPEL repository for pip package installation
 if [ "${distro_family}" == "redhat" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm; fi
