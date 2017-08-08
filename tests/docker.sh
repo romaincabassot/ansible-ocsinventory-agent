@@ -73,3 +73,6 @@ tail ${idempotence} \
 
 # Post install tests
 docker exec --tty "$(cat ${container_id})" env TERM=xterm /bin/bash /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test_inside_docker.sh "${distro_family}"
+
+# Delete container
+docker stop "$(cat ${container_id})" && docker rm "$(cat ${container_id})"
