@@ -18,6 +18,7 @@ variables:
   tags: [ "shared insecure docker" ]
   stage: test
   script:
+  - ls -l
   - /bin/sh ${CI_PROJECT_DIR}/tests/docker.sh "${distro}" "${distro_version}" "${init}" "${run_opts}" "${ansible_version}" "${CI_PROJECT_DIR}"
 
 testing:debian7_ansible2.2:
