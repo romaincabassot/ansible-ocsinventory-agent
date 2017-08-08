@@ -10,6 +10,8 @@ run_opts=$4
 ansible_version=$5
 local_role_path=$6
 
+container_id="$(mktemp)"
+
 echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts=${run_opts} AnsibleVersion=${ansible_version} container_id=${container_id}"
 
 case "${distro}" in
@@ -30,8 +32,6 @@ case "${distro}" in
         exit 1
 esac
 
-
-container_id="$(mktemp)"
 docker run --detach --volume="${local_role_path}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
 
 # Install EPEL repository for pip package installation
