@@ -5,6 +5,11 @@
 - name: selinux support under EL 6
   yum: name=libselinux-python state=present
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "6"
+  
+    
+- name: Cron requirements
+  package: name=cron state=present
+  when: ocsinventory_setup_cronjob
 
 - name: Install OCS inventory agent on RedHat OS family
   yum: name={{ ocsinventory_package_name }} state=present enablerepo={{ ocsinventory_yum_repository }}
