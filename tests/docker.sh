@@ -10,6 +10,8 @@ run_opts=$4
 ansible_version=$5
 local_role_path=$6
 
+container_id="$(mktemp)"
+
 echo "Distro=${distro} DistroVersion=${distro_version} Init=${init} run_opts=${run_opts} AnsibleVersion=${ansible_version} container_id=${container_id}"
 
 case "${distro}" in
@@ -30,9 +32,7 @@ case "${distro}" in
         exit 1
 esac
 
-
-container_id="$(mktemp)"
-docker run --detach --volume="${local_role_path}":/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
+docker run --detach --volume="${local_role_path}:/etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent:ro" ${run_opts} ${distro}:${distro_version} "${init}" > "${container_id}"
 
 # Install EPEL repository for pip package installation
 if [ "${distro_family}" == "redhat" ] && [ "${distro_version}" == "6" ]; then docker exec --tty "$(cat ${container_id})" env TERM=xterm rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm; fi
@@ -73,3 +73,6 @@ tail ${idempotence} \
 
 # Post install tests
 docker exec --tty "$(cat ${container_id})" env TERM=xterm /bin/bash /etc/ansible/roles/romaincabassot.ansible-ocsinventory-agent/tests/test_inside_docker.sh "${distro_family}"
+
+# Delete container
+docker stop "$(cat ${container_id})" && docker rm "$(cat ${container_id})"
