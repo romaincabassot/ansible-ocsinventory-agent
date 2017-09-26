@@ -8,7 +8,7 @@
   
     
 - name: Cron requirements
-  package: name=cron state=present
+  package: name={{cron_package_name}} state=present
   when: ocsinventory_setup_cronjob
 
 - name: Install OCS inventory agent on RedHat OS family

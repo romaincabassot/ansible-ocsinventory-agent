@@ -1,2 +1,3 @@
 ---
 ocsinventory_binary: "/usr/sbin/ocsinventory-agent"
+cron_package_name: "cronie"
