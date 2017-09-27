@@ -37,3 +37,6 @@
         job="{{ocsinventory_binary}} {{ocsinventory_launch_options}}"
   when: ocsinventory_setup_cronjob
 
+- name: Post-installation checks
+  include: post_install_test.yml
+  when: post_install_checks is defined and post_install_checks
