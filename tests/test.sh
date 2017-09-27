@@ -90,7 +90,7 @@ POST_INSTALL_CHECK_OPTS=""
 if [ -f "$PWD/tests/post_install_test.yml" ]; then
 	POST_INSTALL_CHECK_OPTS="-e post_install_checks=true"	
 fi
-docker exec $container_id env TERM=xterm env ANSIBLE_FORCE_COLOR=1 $POST_INSTALL_CHECK_OPTS ansible-playbook /etc/ansible/roles/role_under_test/tests/$playbook
+docker exec $container_id env TERM=xterm env ANSIBLE_FORCE_COLOR=1 ansible-playbook $POST_INSTALL_CHECK_OPTS /etc/ansible/roles/role_under_test/tests/$playbook
 
 if [ "$test_idempotence" = true ]; then
   # Run Ansible playbook again (idempotence test).
