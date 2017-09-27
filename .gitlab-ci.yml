@@ -1,7 +1,8 @@
 .template:testing_distro: &testing_distro
   stage: test
   script:
-  - export $distro
+  - export distro=$distro
+  - export container_id=$(uuidgen)
   - tests/test.sh
 
 testing:debian8:
