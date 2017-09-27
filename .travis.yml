@@ -10,7 +10,7 @@ env:
   - distro: ubuntu1404
 
 script:
-  - /bin/bash export "${distro}" && "${PWD}/tests/test.sh"
+  - export "${distro}" && "${PWD}/tests/test.sh"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
