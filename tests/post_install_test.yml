@@ -11,7 +11,3 @@
     patterns: "*.ocs"
   register: inventory_files
   failed_when:  inventory_files.matched == 0
-  
-- name: Display inventory_files var
-  debug:
-    var: inventory_files
